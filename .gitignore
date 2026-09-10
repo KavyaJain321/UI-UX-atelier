@@ -1,0 +1,13 @@
+# audit outputs — always written to a scratch directory, never committed
+audit/
+*.local
+
+# os / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+
+# never expected here, but cheap insurance
+node_modules/

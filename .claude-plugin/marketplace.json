@@ -1,0 +1,16 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "atelier",
+  "description": "Frontend design method and UI/UX auditor for Claude Code.",
+  "owner": {
+    "name": "TDS Works"
+  },
+  "plugins": [
+    {
+      "name": "atelier",
+      "description": "Research-led frontend design method plus an evidence-first UI/UX auditor. `atelier` is the doctrine for building sites that do not look generated; `ui-audit` measures an existing interface — a static pass over the repository and a real-Chrome pass over the running page — before anyone forms an opinion about it.",
+      "category": "design",
+      "source": "./plugins/atelier"
+    }
+  ]
+}
