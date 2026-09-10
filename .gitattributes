@@ -1,0 +1,14 @@
+# Keep LF in the repository. The scripts carry a shebang and are run directly on
+# macOS and Linux, where a CRLF line ending breaks the interpreter line.
+* text=auto eol=lf
+*.mjs text eol=lf
+*.js  text eol=lf
+*.py  text eol=lf
+*.md  text eol=lf
+*.json text eol=lf
+
+# binaries, if any are ever added
+*.png binary
+*.jpg binary
+*.webp binary
+*.woff2 binary
