@@ -70,7 +70,7 @@ const PAGES = [ROOT, ...(flag('pages', '') ? flag('pages', '').split(',').map((p
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const PORT = 9500 + Math.floor(Math.random() * 400);
 const chrome = spawn(CHROME, [
-  `--remote-debugging-port=${PORT}`, '--headless=new', '--hide-scrollbars',
+  `--remote-debugging-port=${PORT}`, '--headless=new', '--hide-scrollbars', '--disable-lcd-text',
   '--no-first-run', '--no-default-browser-check', '--autoplay-policy=no-user-gesture-required',
   '--remote-allow-origins=*', `--user-data-dir=${join(tmpdir(), 'audit-' + Date.now())}`, 'about:blank',
 ], { stdio: ['ignore', 'ignore', 'ignore'] });

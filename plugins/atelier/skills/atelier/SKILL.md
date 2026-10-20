@@ -1,17 +1,16 @@
 ---
 name: atelier
 description: >
-  Research-led frontend design system for building or improving websites that look
-  deliberately designed rather than generated. Use this whenever the work touches how a site
-  looks, moves, or feels - building a landing page, marketing site, portfolio or product
-  page; redesigning or "making better" an existing site; choosing a palette, typography,
-  layout or theme; adding scroll animation, motion, transitions, or 3D; auditing a
-  competitor or a site the user owns; or responding to feedback like "it looks generic",
-  "it looks AI-made", "it's boring", "no wow factor", "make it more premium", or "make it
-  work on mobile". Also use it for design research - finding references, analysing
-  competitors, deriving a creative direction - and for verifying a build on real devices.
-  Prefer this skill over generic frontend guidance for anything visual, and load it BEFORE
-  choosing colours, fonts, or animation, because those decisions are hard to reverse later.
+  Research-led frontend design system for building, auditing, fixing or improving websites
+  and web apps so they look designed rather than generated. Use it whenever work touches how
+  a site looks, moves or feels: building a landing page or product site; reading a codebase
+  to find and fix its UI/UX issues; redesigning or "making better" a site; choosing,
+  changing or comparing colour palettes (independent agents propose, each is tried on the
+  running site, blind judges pick); typography, layout, theme; scroll animation, motion, 3D;
+  auditing a competitor or the user's own site; or feedback like "looks generic", "looks
+  AI-made", "boring", "no wow", "fix the colours", "more premium", "broken on mobile". Also
+  for design research and real-device verification. Prefer it over generic frontend
+  guidance for anything visual, and load it BEFORE choosing colours, fonts or animation.
 ---
 
 # Atelier
@@ -43,7 +42,10 @@ source. Then verify on a real device, because emulators lie.
 | The request | Start here |
 |---|---|
 | Build a new site or landing page | §1 Research → §2 Direction → §3 System → §4 Build |
+| **"Read this repo, find the UI/UX issues and fix them"** | **§F Fix mode** → `references/fix.md` |
+| **"Change / try different colours", "fix the palette"** | **§P Palette tournament** → `references/palette-tournament.md` |
 | "Make this site better" / audit an existing site | §0 Audit first, then §1 |
+| A measurement-only review, ranked against a fixed rubric | The `ui-audit` skill in this plugin |
 | Audit a competitor, or a site you have no access to | §0, then **§0.5** — different rules apply |
 | "It looks generic / AI-made" | `references/anti-generic.md`, then rebuild palette + chrome |
 | "It's boring, no wow factor" | `references/direction.md` §1 — this is a mechanism problem |
@@ -89,6 +91,57 @@ flows yourself:
 ```bash
 node scripts/audit.mjs https://example.com --pages products/x,collections/all --dismiss
 ```
+
+---
+
+## §F — Fix mode: a codebase you can edit
+
+When the person points you at a project and wants the problems fixed, not just listed. Full
+method in `references/fix.md`. If they only want the problems measured and written up, that
+is the `ui-audit` skill's job; when both are installed, its report is a good *before* record
+for fix mode.
+
+1. **Safety net first.** `git status`; work on a branch; never edit a frozen baseline; never
+   deploy; never add dependencies without asking.
+2. **Scan the source**, so every finding has a file and line:
+
+   ```bash
+   node scripts/scan.mjs <project-dir> --out <scratch>/scan
+   ```
+
+3. **Run it** with the project's own dev command, then `audit.mjs` and a mobile `cdp.mjs`
+   sweep on the local URL. Keep these as the *before* record.
+4. **Triage into three lanes.** Objective problems (contrast, focus, alt, dead controls, tap
+   targets, overflow, `100vh`, ungated hover) are fixed directly. Systemic ones (hardcoded
+   colours that duplicate tokens, no type scale) get a short plan, then the fix. Taste —
+   palette, type, layout, copy — is proposed and the person decides.
+5. **Fix at the source of truth.** A contrast failure in forty places is one token. Repair it
+   with `contrast.mjs --fix`, which moves lightness only so the colour still reads as itself.
+6. **Verify**: build, lint and tests if they exist, then the same scripts again. Every number
+   must be equal or better. Report before and after.
+
+---
+
+## §P — Palette tournament
+
+When colour is in question. Full method in `references/palette-tournament.md`.
+
+1. Scan for the real variable names; write the role map and a one-paragraph product brief.
+2. **Spawn four or five generator agents in parallel, one per source**: faithful-and-repaired,
+   derived from the client's own artefacts, a theme family, the category's opposite, and an
+   optional wildcard. One model writing five palettes converges; independent agents with
+   different sources diverge.
+3. **Render all of them on the running site** without editing a file:
+
+   ```bash
+   node scripts/palette-lab.mjs <url> --candidates <scratch>/candidates --out <scratch>/lab
+   ```
+
+4. **Spawn three blind judges** with different lenses — belonging, use, generic-ness. They see
+   letters, images and measured contrast, never names or sources. Borda count; one hybrid round
+   at most. The current palette winning is a real result.
+5. Apply the winner to the token definitions only if the person asked for new colours;
+   otherwise present the named sheet and ask.
 
 ---
 
@@ -325,12 +378,17 @@ it, it is a template**, however polished.
 | `references/critique.md` | Attacking a concept; auditing an existing site; before showing work |
 | `references/qa.md` | Verifying a build; the harness; the pre-handover checklist |
 | `references/process.md` | Sequencing work, phases, migrations, deploy discipline |
+| `references/fix.md` | Fixing a codebase in place: safety net, three lanes, fix recipes, verification |
+| `references/palette-tournament.md` | Generating palettes with agents, rendering them, blind judging, applying |
 
 | Script | Use |
 |---|---|
 | `scripts/audit.mjs` | Evidence pass over any live URL — palette, type, weight, overflow, contrast, tells |
 | `scripts/cdp.mjs` | Real-Chrome verification: `--sweep` for a whole page, or scripted jobs |
 | `scripts/palette.py` | Derive a palette from a reference image, with a contrast matrix |
+| `scripts/scan.mjs` | Read a project's source: stack, colour tokens, hardcoded colours, smells with file:line |
+| `scripts/contrast.mjs` | Check contrast, or repair a colour to a target ratio by moving lightness only |
+| `scripts/palette-lab.mjs` | Try candidate palettes on the running site; named and blind contact sheets |
 
 ---
 

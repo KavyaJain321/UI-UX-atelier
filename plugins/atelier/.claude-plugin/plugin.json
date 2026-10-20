@@ -1,7 +1,7 @@
 {
   "name": "atelier",
-  "description": "Research-led frontend design method plus an evidence-first UI/UX auditor. `atelier` is the doctrine for building sites that do not look generated; `ui-audit` measures an existing interface — a static pass over the repository and a real-Chrome pass over the running page — before anyone forms an opinion about it.",
-  "version": "1.0.0",
+  "description": "Research-led frontend design method plus an evidence-first UI/UX auditor. `atelier` is the doctrine for building sites that do not look generated, with a fix mode that repairs a repository's UI/UX problems and a palette tournament where independent agents propose palettes and blind judges pick; `ui-audit` measures an existing interface — a static pass over the repository and a real-Chrome pass over the running page — before anyone forms an opinion about it.",
+  "version": "1.1.0",
   "keywords": [
     "design",
     "frontend",
@@ -11,6 +11,9 @@
     "accessibility",
     "design-system",
     "animation",
-    "critique"
+    "critique",
+    "palette",
+    "color",
+    "fix"
   ]
 }

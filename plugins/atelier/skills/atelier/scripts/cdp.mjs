@@ -133,6 +133,7 @@ const PORT = 9333 + Math.floor(Math.random() * 600);
 const profile = join(tmpdir(), 'cdp-profile-' + Date.now());
 const chrome = spawn(CHROME, [
   `--remote-debugging-port=${PORT}`,
+  '--disable-lcd-text',                 // no colour-fringed small text in screenshots
   '--headless=new',
   '--hide-scrollbars',
   '--no-first-run',
